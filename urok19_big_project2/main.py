@@ -3,9 +3,10 @@ from console_helper import *
 from library import *
 from stud_menu import *
 from adm_menu import *
+from menu import *
 
 books: list[Book] = load_books_from_txt_file("books.txt")
-loan_books: list[Book] = load_loans_from_list_bk(load_books_from_txt_file("books.txt"))
+loan_books: list[Book] = load_loans_from_list_bk(books)
 
 if len(books) == 0:
 
@@ -70,48 +71,17 @@ max_book_id = 0
 
 session_active = False
 
-def add_new_book():
-    new_book = inp_book_data()
-    add_book_to_list(books, new_book)
-
-def print_main_menu():
-
-    global session_active
-
-    if session_active == False:
-        text = [
-            "Добро пожаловать в электронную версию школьной библиотеки!", 
-            "1. Войти как студент.", 
-            "2. Войти как администратор.",
-            "3. Выйти из программы",
-        ]
-
-        for i in text:
-            print(i.center(130))
-
-    else:
-        text = [            
-            "Добро пожаловать в электронную версию школьной библиотеки!",  
-            "1. Вернуться",
-            "2. Выйти из аккаунта",
-            "3. Выйти из программы",
-        ]
-
-        for i in text:
-            print(i.center(130))
-
 is_run = True
 
 while is_run == True:
     
-    print_main_menu()
+    print_main_menu(session_active)
     choose_action = input_int("\nВыберите действие: ", 1, 3)
 
     if choose_action == 1 and session_active == False:
-        now_acc = input_str("Введите свое имя: ", 1, 30)
-        session_active = True
-        work_with_stud_menu(books, loan_books, now_acc)
-
+            now_acc = input_str("Введите свое имя: ", 1, 30)
+            session_active = True
+            work_with_stud_menu(books, loan_books, now_acc)
 
     elif choose_action == 1 and session_active == True:
         

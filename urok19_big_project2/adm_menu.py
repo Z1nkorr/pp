@@ -1,6 +1,11 @@
 from functions_book import *
 
+STANDART = 1
+color = "\033[0m"
+
 def work_with_admin_menu(books: list[Book], loan_books: list[Book]):
+
+    style = STANDART
         
     work_ad = True
 
@@ -22,27 +27,33 @@ def work_with_admin_menu(books: list[Book], loan_books: list[Book]):
         choose_action = input_int("\nВыберите действие: ", 1, 9)
 
         if choose_action == 1:
-            print_all_books(books)
+            print_all_books(books, style)
+            input("Нажмите «enter»")
 
         elif choose_action == 2:
             new_book = inp_book_data()
             new_book.id = get_next_book_id()
             add_book_to_list(books, new_book)
+            input("Нажмите «enter»")
 
         elif choose_action == 3:
             search_id = input_int("\nВведите id книги которую хотите удалить: ", 1, 1000)
             delete_book_by_id(books, search_id)
+            input("Нажмите «enter»")
 
         elif choose_action == 4:
             book = inp_book_data()
             search_id = input_int("Введите id книги которую хотите обновить: ", 1, 1000)
             update_book_by_id(books, book, search_id)
+            input("Нажмите «enter»")
 
         elif choose_action == 5:
-            print_loan_books(loan_books)
+            print_all_books(loan_books)
 
         elif choose_action == 6:
-            delete_loan_book_by_id(loan_books)
+            search_id = input_int("Введите айди книги которую хотите вернуть: ")
+            delete_loan_book_by_id(search_id, loan_books)
+            input("Нажмите «enter»")
 
         elif choose_action == 7:
             work_ad = False

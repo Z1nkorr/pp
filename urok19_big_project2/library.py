@@ -7,6 +7,6 @@ class Book:
     author: str
     genre: str
     rating: float
-    stud_name: str | None = "Нет"
+    stud_name: str = "Нет"
     available: bool = True
     id: int | None = None

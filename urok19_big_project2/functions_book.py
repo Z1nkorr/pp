@@ -4,7 +4,12 @@ from datetime import timedelta, date
 
 BOOKS_FILE = "books.pkl"
 
+FIRST = 1
+SECOND = 2
+
+color = "\033[0m"
 global_book_id = 0
+style = FIRST
 
 def update_get_next_book_id(id: int) -> int:
 
@@ -16,12 +21,12 @@ def update_get_next_book_id(id: int) -> int:
 
 def inp_book_data() -> Book:
 
-    title = input_str("Введите название книги: ",1,40)
-    author = input_str("Введите автора книги: ",1,25)
-    genre = input_str("Введите жанр: ", 1, 20)
+    title = input_str(f"Введите название книги: ",1,40)
+    author = input_str(f"Введите автора книги: ",1,25)
+    genre = input_str(f"Введите жанр: ", 1, 20)
     stud_name = None
     available = True
-    rating = input_float("Введите рейтинг книги: ",1,5)
+    rating = input_float(f"Введите рейтинг книги: ",1,5)
 
     return Book(
         id = 0,
@@ -71,20 +76,20 @@ def delete_book_by_id(books: list[Book], search_id: int) -> bool:
 
 def issue_registration(books: list[Book], now_acc: str, loan_books: list[Book]):
 
-    search_id = input_int("\nВведите id книги которую хотите оформить: ", 1, 1000)
+    search_id = input_int(f"\nВведите id книги которую хотите оформить: ", 1, 1000)
     book_loan = get_book_by_id(books, search_id)
     td = timedelta(days=14)
     issue_date = date.today() + td
 
     if book_loan != None:
-        print(f"Книга успешно забронирована.\nБронь продлится до {issue_date} После книгу «{book_loan.title}» придеться вернуть через 14 дней.")
+        print(f"Книга успешно забронирована.{'\n'*2}Бронь продлится до {issue_date} После книгу «{book_loan.title}» придеться вернуть через 14 дней.\n")
         book_loan.stud_name = now_acc
         loan_books.append(book_loan)
         book_loan.available = False
     else:
-        print("\nУвы, книги с таким id не оказалось")
+        print(f"\nУвы, книги с таким id не оказалось")
 
-def print_single_book(book: Book):
+def print_single_book(book: Book, stl_fr):
     if book.available == True:
         book_available = "Есть"
     else:
@@ -94,36 +99,59 @@ def print_single_book(book: Book):
         st_name = "Нет"
     else:
         st_name = book.stud_name
-    
+
     print(
-        f"{(book.id):<5}"
-        f"{book.title:<40}"
-        f"{book.author:<25}"
-        f"{book.genre:<20}"
-        f"{st_name:<20}"
-        f"{book_available:<17}"
-        f"{book.rating:<5}"
+        f"{stl_fr}{(book.id):<5}"
+        f"{stl_fr}{book.title:<40}"
+        f"{stl_fr}{book.author:<25}"
+        f"{stl_fr}{book.genre:<20}"
+        f"{stl_fr}{st_name:<20}"
+        f"{stl_fr}{book_available:<17}"
+        f"{stl_fr}{book.rating:<5}{stl_fr}"
     )
 
-def print_book_header():
+def print_book_header(stl_fr):
     print("\n"
-        f"{'ИД':<5}"
-        f"{'Название':<40}"
-        f"{'Автор':<25}"
-        f"{'Жанр':<20}"
-        f"{'Имя студента':<20}"
-        f"{'Есть в наличии':<17}"
-        f"{'Рейтинг':<5}"
+        f"{stl_fr}{'ИД':<5}"
+        f"{stl_fr}{'Название':<40}"
+        f"{stl_fr}{'Автор':<25}"
+        f"{stl_fr}{'Жанр':<20}"
+        f"{stl_fr}{'Имя студента':<20}"
+        f"{stl_fr}{'Есть в наличии':<17}"
+        f"{stl_fr}{'Рейтинг':<5}{stl_fr}"
     )
 
-def print_all_books(books: list[Book]):
-    if len(books) > 0:
-        print_book_header()
-        for book in books:
-            print_single_book(book)
-            print(f"{'-'*140}")
-    else:
-        print("Книг нет в ассортименте")
+def print_all_books(books: list[Book], style: int):
+
+    if style == 1:
+        stl_fr = ""
+        if len(books) > 0:
+            print_book_header(stl_fr)
+            for book in books:
+                print_single_book(book, stl_fr)
+                print(f"{'-'*140}")
+        else:
+            print(f"Книг нет в ассортименте")
+
+    elif style == 2:
+        if len(books) > 0:
+            stl_fr = ""
+            print_book_header(stl_fr)
+            for book in books:
+                print_single_book(book, stl_fr)
+        else:
+            print(f"Книг нет в ассортименте")
+
+    elif style == 3:
+        if len(books) > 0:
+            stl_fr = "|"
+            print_book_header(stl_fr)
+            print(f"{'='*140}")
+            for book in books:
+                print_single_book(book, stl_fr)
+                print(f"{'-'*140}")
+        else:
+            print(f"Книг нет в ассортименте")
 
 def sort_books_by_type_sort(books: list[Book], type_sort: int):
     pass
@@ -177,13 +205,13 @@ def load_loans_from_list_bk(books: list[Book]) -> list:
 def delete_loan_book_by_id_st(search_id: int, loan_books: list[Book], now_acc: str):
     book_to_delete = get_book_by_id(loan_books, search_id)
 
-    if book_to_delete.stud_name != None:
+    if book_to_delete.stud_name != "Нет":
         if book_to_delete.stud_name == now_acc:
             loan_books.remove(book_to_delete)
         elif book_to_delete.stud_name != now_acc:
             print("Запись оформлена не на вас.")
-        else:
-            print("Такой записи нет.")
+    else:
+        print("Такой записи нет.")
 
 def delete_loan_book_by_id(search_id: int, loan_books: list[Book]):
     book_to_delete = get_book_by_id(loan_books, search_id)
@@ -192,26 +220,46 @@ def delete_loan_book_by_id(search_id: int, loan_books: list[Book]):
     else:
         print("Такой записи нет.")
 
-def print_loan_books_st(loan_books: list, now_acc):
-    if len(loan_books) > 0:
-        print_book_header()
-        for book in loan_books:
-            if book.stud_name == now_acc:
-                print_single_book(book)
-                print(f"{'-'*140}")
-            else:
-                pass
-    else:
-        print("Книг нет в ассортименте")
+def print_loan_books_st(loan_books: list, now_acc, style: int):
 
-def print_loan_books(loan_books: list):
-    if len(loan_books) > 0:
-        print_book_header()
-    for book in loan_books:
-        print_single_book(book)
-        print(f"{'-'*140}")
-    else:
-        print("Книг нет в ассортименте")
+    if style == 1:
+        stl_fr = ""
+        if len(loan_books) > 0:
+            print_book_header(stl_fr)
+            for book in loan_books:
+                if book.stud_name == now_acc:
+                    print_single_book(book,stl_fr)
+                    print(f"{'-'*140}")
+                else:
+                    pass
+        else:
+            print("Книг нет в ассортименте")
+
+    elif style == 2:
+        stl_fr = ""
+        if len(loan_books) > 0:
+            print_book_header(stl_fr)
+            for book in loan_books:
+                if book.stud_name == now_acc:
+                    print_single_book(book,stl_fr)
+                else:
+                    pass
+        else:
+            print("Книг нет в ассортименте")
+
+    elif style == 3:
+        stl_fr = "|"
+        if len(loan_books) > 0:
+            print_book_header(stl_fr)
+            print(f"{'='*140}")
+            for book in loan_books:
+                if book.stud_name == now_acc:
+                    print_single_book(book,stl_fr)
+                    print(f"{'-'*140}")
+                else:
+                    pass
+        else:
+            print("Книг нет в ассортименте")
 
 def load_books_from_txt_file(filename: str) -> list[Book]:
     try:
@@ -259,3 +307,21 @@ def save_books_to_txt_file(books: list[Book], filename: str) -> bool:
         return True
     except:
         return False
+
+def switch_color(choose_action: int):
+
+    if choose_action == 1:
+        color = "\033[91m"
+        return color
+    
+    elif choose_action == 2:
+        color = "\033[92m"
+        return color
+    
+    elif choose_action == 3:
+        color = "\033[93m"
+        return color
+
+    elif choose_action == 4:
+        color = "\033[0m"
+        return color

@@ -6,7 +6,7 @@ def input_int(mes:str,min_val:int,max_val:int) -> int:
 
     while is_cor_inp==False:
         try:
-            input_int = int(input(mes))
+            input_int = int(input(mes).strip(" "))
 
             if input_int < min_val or input_int > max_val:
                 print(
@@ -39,7 +39,7 @@ def input_float(mes:str,min_val:int,max_val:int)->float:
 
     while is_cor_inp==False:
         try:
-            input_float = float(input(mes))
+            input_float = float(input(mes).strip(" "))
 
             if input_float < min_val or input_float > max_val:
                 print(
