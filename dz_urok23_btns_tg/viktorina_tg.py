@@ -1,8 +1,6 @@
 import telebot
 from telebot import types
 
-import random
-
 # "8646229502:AAEAsnMptnhLXjrWjiJM7XrKAoEXcblpe10"
 
 # @choose_numbot
