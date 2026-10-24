@@ -42,9 +42,7 @@ def process_inline_btn_keyboard(call):
 
     user_answer = int(input_text.split(":")[1])
 
-    for i in range(7):
-        if user_answer == i:
-            output_text = f"Вы выбрали число {i}."
+    output_text = f"Вы выбрали число {user_answer}."
 
     bot.send_message(
     chat_id,
