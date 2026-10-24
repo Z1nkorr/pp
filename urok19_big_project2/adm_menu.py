@@ -1,6 +1,6 @@
 from functions_book import *
 
-STANDART = 1
+STANDART = 2
 color = "\033[0m"
 
 def work_with_admin_menu(books: list[Book], loan_books: list[Book]):
@@ -48,10 +48,10 @@ def work_with_admin_menu(books: list[Book], loan_books: list[Book]):
             input("Нажмите «enter»")
 
         elif choose_action == 5:
-            print_all_books(loan_books)
+            print_all_books(loan_books, style)
 
         elif choose_action == 6:
-            search_id = input_int("Введите айди книги которую хотите вернуть: ")
+            search_id = input_int("Введите айди книги которую хотите вернуть: ", 1, 1000)
             delete_loan_book_by_id(search_id, loan_books)
             input("Нажмите «enter»")
 

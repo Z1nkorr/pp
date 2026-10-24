@@ -153,8 +153,6 @@ def print_all_books(books: list[Book], style: int):
         else:
             print(f"Книг нет в ассортименте")
 
-def sort_books_by_type_sort(books: list[Book], type_sort: int):
-    pass
 
 def find_books_by_type_parameter(
     books: list[Book], type_parameter: int, parameter: str
