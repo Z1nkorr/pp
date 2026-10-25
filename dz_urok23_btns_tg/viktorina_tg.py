@@ -97,7 +97,7 @@ def process_inline_btn_keyboard(call):
         output_text = f"Вы ошиблись, правильный ответ был {que_and_answ[que_num][right_answers[que_num]]}"
         output_text += "\n"
         output_text += "\n"
-        output_text += f"Вы ответили правильно на {5-fails}/5 вопросов."
+        output_text += f"Вы ответили правильно на {4-fails}/4 вопросов."
         fails += 1
         que_num += 1
     elif user_answer == right_answers[que_num] and que_num == 3:
