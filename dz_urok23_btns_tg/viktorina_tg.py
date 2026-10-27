@@ -20,7 +20,6 @@ que_num = 0
 
 fails = 0
 
-
 @bot.message_handler(commands=["start"])
 def process_command_start(message):
 
@@ -63,10 +62,6 @@ def process_command_start(message):
         message_thread_id=message.message_thread_id,
     )
 
-                        
-
-
-
 @bot.callback_query_handler(func=lambda call: call.data.startswith("que:") == True)
 def process_inline_btn_keyboard(call):
 
@@ -106,7 +101,6 @@ def process_inline_btn_keyboard(call):
         output_text += "\n"
         output_text += f"Вы ответили правильно на {4-fails}/4 вопросов."
         que_num += 1
-    
 
     bot.send_message(
     chat_id,
